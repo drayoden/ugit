@@ -66,5 +66,11 @@ def _empty_current_directory():
                 # deletion may fail if directory contains ignored files... we're good!
                 pass
 
+def commit(message):
+    commit = f'tree {write_tree()}\n'
+    commit += '\n'
+    commit += f'{message}\n'
+    return data.hash_object(commit.encode(), 'commit')
+
 def is_ignored(path):
     return '.ugit' in path.split('/')
