@@ -33,3 +33,7 @@ def get_object(oid, expected='blob'):
     if expected is not None and type_ != expected:
         raise ValueError(f'Expected {exptected}, got {type_}' )
     return content
+
+def set_HEAD(oid):
+    with open(f'{GIT_DIR}/HEAD','w') as f:
+        f.write(oid)
