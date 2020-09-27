@@ -19,19 +19,11 @@ def get_object(oid, expected='blob'):
     with open(f'{GIT_DIR}/objects/{oid}', 'rb') as f:
         obj = f.read()
 
-    first_null = obj.index(b'\x00')
-    type_ = obj[:first_null].decode()   # type string before null byte
-    content = obj[first_null + 1:]      # remaining data after the null byte
+    type_, _, content = obj.partition(b'\x00')
+    type_ = type_.decode()
 
-    
-    # -- assert is used for debug only
-    # if expected is not None:
-    #    assert type_ == expected, f'Expected {exptected}, got {type_}'  
-    # return content
-
-    # -- alternate from above using 'raise'
-    if expected is not None and type_ != expected:
-        raise ValueError(f'Expected {exptected}, got {type_}' )
+    if expected is not None:
+       assert type_ == expected, f'Expected {expected}, got {type_}'  
     return content
 
 def get_HEAD():
